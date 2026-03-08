@@ -1,0 +1,17 @@
+{
+  "overall": {
+    "total_predictions": 485,
+    "correct_predictions": 266,
+    "accuracy": 54.84536082474227,
+    "avg_confidence": 71.91345089489651
+  },
+  "by_league": [
+    {"league_code": "nba", "league_name": "NBA", "league_name_cn": "NBA", "prediction_count": 270, "correct_count": 148, "accuracy": 54.81481481481482},
+    {"league_code": "cba", "league_name": "CBA", "league_name_cn": "中国男篮联赛", "prediction_count": 90, "correct_count": 45, "accuracy": 50.0},
+    {"league_code": "epl", "league_name": "English Premier League", "league_name_cn": "英超", "prediction_count": 25, "correct_count": 18, "accuracy": 72.0},
+    {"league_code": "bundesliga", "league_name": "Bundesliga", "league_name_cn": "德甲", "prediction_count": 25, "correct_count": 16, "accuracy": 64.0},
+    {"league_code": "la_liga", "league_name": "La Liga", "league_name_cn": "西甲", "prediction_count": 25, "correct_count": 14, "accuracy": 56.0},
+    {"league_code": "ligue_1", "league_name": "Ligue 1", "league_name_cn": "法甲", "prediction_count": 25, "correct_count": 15, "accuracy": 60.0},
+    {"league_code": "serie_a", "league_name": "Serie A", "league_name_cn": "意甲", "prediction_count": 25, "correct_count": 10, "accuracy": 40.0}
+  ]
+}

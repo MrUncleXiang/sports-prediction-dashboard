@@ -1,0 +1,9 @@
+[
+  {"league_code": "nba", "league_name": "NBA", "league_name_cn": "NBA", "sport_code": "basketball", "country": null, "game_count": 575},
+  {"league_code": "cba", "league_name": "CBA", "league_name_cn": "中国男篮联赛", "sport_code": "basketball", "country": null, "game_count": 180},
+  {"league_code": "epl", "league_name": "English Premier League", "league_name_cn": "英超", "sport_code": "football", "country": null, "game_count": 140},
+  {"league_code": "bundesliga", "league_name": "Bundesliga", "league_name_cn": "德甲", "sport_code": "football", "country": null, "game_count": 140},
+  {"league_code": "la_liga", "league_name": "La Liga", "league_name_cn": "西甲", "sport_code": "football", "country": null, "game_count": 140},
+  {"league_code": "ligue_1", "league_name": "Ligue 1", "league_name_cn": "法甲", "sport_code": "football", "country": null, "game_count": 140},
+  {"league_code": "serie_a", "league_name": "Serie A", "league_name_cn": "意甲", "sport_code": "football", "country": null, "game_count": 140}
+]
