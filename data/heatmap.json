@@ -1,7 +1,7 @@
 [
-  {"confidence_bin": 40, "total_count": 45, "actual_accuracy": 42.2},
-  {"confidence_bin": 50, "total_count": 78, "actual_accuracy": 51.3},
-  {"confidence_bin": 60, "total_count": 125, "actual_accuracy": 58.4},
-  {"confidence_bin": 70, "total_count": 156, "actual_accuracy": 68.6},
-  {"confidence_bin": 80, "total_count": 81, "actual_accuracy": 79.0}
+  {
+    "confidence_bin": 0.0,
+    "total_count": 485,
+    "actual_accuracy": 54.85
+  }
 ]
