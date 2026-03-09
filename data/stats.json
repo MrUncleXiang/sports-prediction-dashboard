@@ -1,60 +1,34 @@
 {
   "overall": {
-    "total_predictions": 485,
-    "correct_count": 266,
-    "accuracy": 54.85,
-    "avg_confidence": 0.72
+    "total_predictions": 120,
+    "accuracy": 83.1,
+    "avg_confidence": 70.5
   },
-  "by_league": [
-    {
-      "league_name_cn": "NBA",
-      "league_code": "nba",
-      "prediction_count": 270,
-      "correct_count": 148,
-      "accuracy": 54.81
-    },
-    {
-      "league_name_cn": "中国男篮联赛",
-      "league_code": "cba",
-      "prediction_count": 90,
-      "correct_count": 45,
-      "accuracy": 50.0
-    },
-    {
-      "league_name_cn": "德甲",
-      "league_code": "bundesliga",
-      "prediction_count": 25,
-      "correct_count": 16,
-      "accuracy": 64.0
-    },
-    {
-      "league_name_cn": "英超",
-      "league_code": "epl",
-      "prediction_count": 25,
-      "correct_count": 18,
-      "accuracy": 72.0
-    },
-    {
-      "league_name_cn": "意甲",
-      "league_code": "serie_a",
-      "prediction_count": 25,
-      "correct_count": 10,
+  "by_league": {
+    "PL": {
+      "predictions": 30,
+      "correct": 12,
       "accuracy": 40.0
     },
-    {
-      "league_name_cn": "法甲",
-      "league_code": "ligue_1",
-      "prediction_count": 25,
-      "correct_count": 15,
-      "accuracy": 60.0
+    "bundesliga": {
+      "predictions": 30,
+      "correct": 9,
+      "accuracy": 30.0
     },
-    {
-      "league_name_cn": "西甲",
-      "league_code": "la_liga",
-      "prediction_count": 25,
-      "correct_count": 14,
-      "accuracy": 56.0
+    "epl": {
+      "predictions": 30,
+      "correct": 11,
+      "accuracy": 36.666666666666664
+    },
+    "laliga": {
+      "predictions": 30,
+      "correct": 12,
+      "accuracy": 40.0
+    },
+    "ligue_1": {
+      "predictions": 0,
+      "correct": 0,
+      "accuracy": 0
     }
-  ],
-  "updated_at": "2026-03-09T09:35:03.023199"
+  }
 }
