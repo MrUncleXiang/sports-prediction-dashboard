@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据加载测试</title>
+<style>
+body { font-family: Arial; padding: 20px; background: #667eea; color: white; }
+.card { background: white; color: #333; padding: 20px; border-radius: 10px; margin: 10px 0; }
+.success { color: #10b981; }
+.error { color: #ef4444; }
+</style>
+</head>
+<body>
+<h1>🔍 数据文件加载测试</h1>
+<div id="results"></div>
+
+<script>
+const results = document.getElementById('results');
+
+async function testFile(filename) {
+    try {
+        const response = await fetch('./data/' + filename);
+        if (response.ok) {
+            const data = await response.json();
+            return `<div class="card success">✅ ${filename} - 成功加载 (${JSON.stringify(data).length} 字节)</div>`;
+        } else {
+            return `<div class="card error">❌ ${filename} - HTTP ${response.status}</div>`;
+        }
+    } catch (e) {
+        return `<div class="card error">❌ ${filename} - ${e.message}</div>`;
+    }
+}
+
+async function runTests() {
+    const files = ['leagues.json', 'predictions.json', 'models.json', 'stats.json'];
+    let html = '<div class="card"><strong>当前路径:</strong> ' + window.location.pathname + '</div>';
+    html += '<div class="card"><strong>数据目录:</strong> ./data/</div>';
+    
+    for (const file of files) {
+        html += await testFile(file);
+    }
+    
+    results.innerHTML = html;
+}
+
+runTests();
+</script>
+</body>
+</html>
