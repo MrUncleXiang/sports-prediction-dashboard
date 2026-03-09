@@ -1,233 +1,244 @@
 #!/usr/bin/env python3
 """
-生成预测数据 JSON 文件
+数据生成脚本
+使用真实 ML 模型生成预测数据
+
+用法:
+    python3 data/generate_data.py
 """
 
-import asyncio
-import asyncpg
 import json
-import os
-from datetime import datetime, timedelta
-import random
+import sys
+from pathlib import Path
+from datetime import datetime
 
-async def generate_data():
-    """生成所有数据文件"""
-    print("🚀 开始生成预测数据...")
+# 添加项目根目录到路径
+sys.path.insert(0, '/home/zcx/.openclaw/workspace')
+
+# 使用简化的 ML 预测服务（不依赖数据库）
+from scripts.ml_prediction_service_simple import predict_match_sync
+
+
+def load_matches(matches_file):
+    """加载比赛数据并按联赛分组"""
+    with open(matches_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
     
-    # 连接数据库
-    conn = await asyncpg.connect(
-        'postgresql://sports:sports_secure_pwd_2026@127.0.0.1:5432/sports_prediction'
-    )
+    # 处理两种格式：
+    # 1. {"matches": [...]} - 扁平列表
+    # 2. {"epl": [...], "laliga": [...]} - 按联赛分组
     
-    # 获取联赛列表
-    leagues = await conn.fetch("""
-        SELECT DISTINCT league_code FROM football_matches 
-        WHERE home_score IS NOT NULL 
-        ORDER BY league_code
-    """)
+    if isinstance(data, dict) and 'matches' in data:
+        # 格式 1：扁平列表，需要按联赛分组
+        matches_list = data['matches']
+        matches_by_league = {}
+        for match in matches_list:
+            league_code = match.get('league_code', 'unknown')
+            if league_code not in matches_by_league:
+                matches_by_league[league_code] = []
+            matches_by_league[league_code].append(match)
+        return matches_by_league
+    elif isinstance(data, dict):
+        # 格式 2：已经按联赛分组
+        return data
+    else:
+        raise ValueError("未知的比赛数据格式")
+
+
+def generate_predictions(matches, output_file):
+    """
+    为所有比赛生成预测
     
-    league_codes = [row['league_code'] for row in leagues]
-    print(f"找到联赛：{league_codes}")
-    
-    # 检查是否有 NBA 数据
-    nba_count = await conn.fetchval('SELECT COUNT(*) FROM nba_matches WHERE home_score IS NOT NULL')
-    has_nba = nba_count > 0
-    print(f"NBA 数据：{nba_count} 场" if has_nba else "NBA 数据：无")
-    
-    # 保存联赛列表
-    with open('data/leagues.json', 'w', encoding='utf-8') as f:
-        json.dump(league_codes, f, ensure_ascii=False, indent=2)
-    print("✅ leagues.json 已生成")
-    
-    # 为每个联赛生成预测数据
+    参数:
+    - matches: 比赛字典（按联赛分组）
+    - output_file: 输出文件路径
+    """
     predictions = {}
+    total_matches = 0
+    successful_predictions = 0
+    failed_predictions = 0
     
-    for league_code in league_codes:
-        print(f"\n处理 {league_code}...")
+    for league_code, league_matches in matches.items():
+        # 跳过非比赛数据（如 metadata）
+        if not isinstance(league_matches, list):
+            print(f"\n⚠️  跳过非比赛数据：{league_code}")
+            continue
         
-        # 获取最近 30 场比赛
-        matches = await conn.fetch("""
-            SELECT 
-                home_team, away_team, home_score, away_score,
-                match_date, season, round_info
-            FROM football_matches 
-            WHERE league_code = $1 
-            AND home_score IS NOT NULL 
-            AND match_date IS NOT NULL
-            ORDER BY match_date DESC
-            LIMIT 30
-        """, league_code)
+        print(f"\n📊 处理联赛：{league_code}")
+        predictions[league_code] = []
         
-        league_predictions = []
-        
-        for match in matches:
-            # 计算实际结果
-            home_score = int(match['home_score'])
-            away_score = int(match['away_score'])
+        for match in league_matches:
+            total_matches += 1
             
-            if home_score > away_score:
-                actual_result = 2  # 主胜
-                actual_result_text = '主胜'
-            elif home_score == away_score:
-                actual_result = 1  # 平局
-                actual_result_text = '平局'
-            else:
-                actual_result = 0  # 客胜
-                actual_result_text = '客胜'
+            # 确保 match 是字典
+            if not isinstance(match, dict):
+                failed_predictions += 1
+                continue
             
-            # 生成预测（模拟）
-            # 使用简单规则：主队近期表现好则预测主胜
-            predicted = random.choices([0, 1, 2], weights=[0.3, 0.2, 0.5])[0]
-            confidence = random.uniform(55, 85)
+            home_team = match.get('home_team', '')
+            away_team = match.get('away_team', '')
+            match_date = match.get('match_date', '')
             
-            # 判断预测是否正确
-            correct = (predicted == actual_result)
-            
-            prediction = {
-                'match_date': match['match_date'].isoformat() if match['match_date'] else None,
-                'home_team': match['home_team'],
-                'away_team': match['away_team'],
-                'predicted': predicted,
-                'confidence': confidence,
-                'actual_score': f"{home_score}-{away_score}",
-                'actual_result': actual_result_text,
-                'correct': correct
-            }
-            
-            league_predictions.append(prediction)
-        
-        predictions[league_code] = league_predictions
-        print(f"  ✅ 生成 {len(league_predictions)} 场预测")
+            try:
+                # 使用真实 ML 模型预测
+                result = predict_match_sync(home_team, away_team, league_code, match_date)
+                
+                prediction = {
+                    'match_date': match_date,
+                    'home_team': home_team,
+                    'away_team': away_team,
+                    'predicted': result['predicted'],
+                    'confidence': result['confidence'],
+                    'probabilities': result['probabilities'],
+                    'model_used': result.get('model_name', 'Unknown'),
+                    'prediction_analysis': generate_analysis(result, home_team, away_team),
+                }
+                
+                # 如果有实际比分，添加验证信息
+                if 'home_score' in match and 'away_score' in match:
+                    home_score = match['home_score']
+                    away_score = match['away_score']
+                    
+                    # 确定实际结果
+                    if home_score > away_score:
+                        actual_result = 2  # 主胜
+                        actual_result_str = '主胜'
+                    elif home_score < away_score:
+                        actual_result = 0  # 客胜
+                        actual_result_str = '客胜'
+                    else:
+                        actual_result = 1  # 平局
+                        actual_result_str = '平局'
+                    
+                    prediction['actual_score'] = f"{home_score}-{away_score}"
+                    prediction['actual_result'] = actual_result_str
+                    prediction['correct'] = (result['predicted'] == actual_result)
+                    
+                    # 添加复盘分析
+                    if prediction['correct']:
+                        prediction['review_analysis'] = f"预测准确！{actual_result_str}符合预期，模型判断精准（置信度{result['confidence']:.1f}%）"
+                    else:
+                        prediction['review_analysis'] = f"预测偏差：预期{get_result_name(result['predicted'])}，实际{actual_result_str}，需优化特征"
+                
+                # 添加轮次信息
+                if 'round' in match:
+                    prediction['round_info'] = match['round']
+                elif 'round_info' in match:
+                    prediction['round_info'] = match['round_info']
+                
+                predictions[league_code].append(prediction)
+                successful_predictions += 1
+                
+                if successful_predictions % 100 == 0:
+                    print(f"  ✅ 已处理 {successful_predictions} 场比赛")
+                
+            except Exception as e:
+                failed_predictions += 1
+                if failed_predictions <= 10:  # 只打印前 10 个错误
+                    print(f"  ❌ 预测失败 {home_team} vs {away_team}: {str(e)}")
+                
+                # 使用默认预测
+                predictions[league_code].append({
+                    'match_date': match_date,
+                    'home_team': home_team,
+                    'away_team': away_team,
+                    'predicted': 2,
+                    'confidence': 50.0,
+                    'probabilities': [0.25, 0.25, 0.5],
+                    'model_used': 'Fallback',
+                    'prediction_analysis': '模型预测失败，使用默认预测',
+                    'review_analysis': '模型预测失败，需检查数据'
+                })
     
-    # 保存预测数据
-    with open('data/predictions.json', 'w', encoding='utf-8') as f:
+    # 保存预测结果
+    output_path = Path(output_file)
+    output_path.parent.mkdir(exist_ok=True)
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(predictions, f, ensure_ascii=False, indent=2)
-    print("\n✅ predictions.json 已生成")
     
-    # 生成 NBA 预测数据
-    if has_nba:
-        print("\n处理 NBA...")
-        
-        nba_matches = await conn.fetch("""
-            SELECT 
-                home_team, away_team, home_score, away_score,
-                match_date, season, round_info
-            FROM nba_matches 
-            WHERE home_score IS NOT NULL 
-            AND match_date IS NOT NULL
-            ORDER BY match_date DESC
-            LIMIT 30
-        """)
-        
-        nba_predictions = []
-        
-        for match in nba_matches:
-            # 计算实际结果（篮球无平局）
-            home_score = int(match['home_score'])
-            away_score = int(match['away_score'])
-            
-            if home_score > away_score:
-                actual_result = 2  # 主胜
-                actual_result_text = '主胜'
-            else:
-                actual_result = 0  # 客胜
-                actual_result_text = '客胜'
-            
-            # 生成预测（模拟）
-            # 使用简单规则：主队表现好则预测主胜
-            predicted = random.choices([0, 2], weights=[0.45, 0.55])[0]  # 篮球只有主胜/客胜
-            confidence = random.uniform(60, 90)
-            
-            # 判断预测是否正确
-            correct = (predicted == actual_result)
-            
-            prediction = {
-                'match_date': match['match_date'].isoformat() if match['match_date'] else None,
-                'home_team': match['home_team'],
-                'away_team': match['away_team'],
-                'predicted': predicted,
-                'confidence': confidence,
-                'actual_score': f"{home_score}-{away_score}",
-                'actual_result': actual_result_text,
-                'correct': correct
-            }
-            
-            nba_predictions.append(prediction)
-        
-        predictions['nba'] = nba_predictions
-        print(f"  ✅ 生成 {len(nba_predictions)} 场 NBA 预测")
-        
-        # 重新保存包含 NBA 的预测数据
-        with open('data/predictions.json', 'w', encoding='utf-8') as f:
-            json.dump(predictions, f, ensure_ascii=False, indent=2)
-        print("✅ predictions.json 已更新（包含 NBA）")
+    print(f"\n✅ 预测完成！")
+    print(f"   总比赛数：{total_matches}")
+    print(f"   成功预测：{successful_predictions}")
+    print(f"   失败预测：{failed_predictions}")
+    if total_matches > 0:
+        print(f"   成功率：{successful_predictions/total_matches*100:.1f}%")
+    print(f"   输出文件：{output_file}")
     
-    # 生成模型数据
-    models = {
-        'best_model': 'Random Forest',
-        'accuracy': 83.10,
-        'features': [
-            'home_team_id',
-            'away_team_id',
-            'league_id',
-            'home_form',
-            'away_form',
-            'home_advantage',
-            'goal_diff_home',
-            'goal_diff_away'
-        ],
-        'training_samples': 9441,
-        'test_samples': 2361,
-        'last_trained': datetime.now().isoformat()
-    }
-    
-    with open('data/models.json', 'w', encoding='utf-8') as f:
-        json.dump(models, f, ensure_ascii=False, indent=2)
-    print("✅ models.json 已生成")
-    
-    # 生成统计数据
-    stats = {
-        'overall': {
-            'total_predictions': sum(len(v) for v in predictions.values()),
-            'accuracy': 83.1,
-            'avg_confidence': 70.5
-        },
-        'by_league': {}
-    }
-    
-    for league_code, preds in predictions.items():
-        correct = sum(1 for p in preds if p.get('correct'))
-        total = len(preds)
-        accuracy = (correct / total * 100) if total > 0 else 0
-        
-        # NBA 特殊统计
-        if league_code == 'nba':
-            home_wins = sum(1 for p in preds if p['actual_result'] == '主胜')
-            away_wins = sum(1 for p in preds if p['actual_result'] == '客胜')
-            stats['by_league'][league_code] = {
-                'predictions': total,
-                'correct': correct,
-                'accuracy': accuracy,
-                'home_wins': home_wins,
-                'away_wins': away_wins,
-                'home_win_rate': (home_wins / total * 100) if total > 0 else 0,
-                'sport': 'basketball'
-            }
-        else:
-            stats['by_league'][league_code] = {
-                'predictions': total,
-                'correct': correct,
-                'accuracy': accuracy,
-                'sport': 'football'
-            }
-    
-    with open('data/stats.json', 'w', encoding='utf-8') as f:
-        json.dump(stats, f, ensure_ascii=False, indent=2)
-    print("✅ stats.json 已生成")
-    
-    await conn.close()
-    
-    print("\n🎉 所有数据文件生成完成！")
+    return predictions
 
-if __name__ == "__main__":
-    asyncio.run(generate_data())
+
+def generate_analysis(result, home_team, away_team):
+    """生成预测分析文本"""
+    predicted = result['predicted']
+    confidence = result['confidence']
+    
+    if predicted == 2:  # 主胜
+        analysis = f"{home_team}主场优势明显，近期状态回升，预测主胜（置信度{confidence:.1f}%）"
+    elif predicted == 0:  # 客胜
+        analysis = f"{away_team}客场表现强劲，模型倾向客胜（置信度{confidence:.1f}%）"
+    else:  # 平局
+        analysis = f"双方实力接近，预测平局（置信度{confidence:.1f}%）"
+    
+    return analysis
+
+
+def get_result_name(predicted):
+    """将预测结果转换为文本"""
+    if predicted == 2:
+        return '主胜'
+    elif predicted == 0:
+        return '客胜'
+    else:
+        return '平局'
+
+
+def main():
+    """主函数"""
+    print("🚀 开始生成预测数据...")
+    print("=" * 60)
+    
+    # 加载比赛数据
+    matches_file = '/home/zcx/.openclaw/workspace/phase2_website/data/matches.json'
+    # 输出到两个位置：data 目录和 web 目录
+    output_file_data = '/home/zcx/.openclaw/workspace/phase2_website/data/predictions.json'
+    output_file_web = '/home/zcx/.openclaw/workspace/phase2_website/src/web/data/predictions.json'
+    
+    if not Path(matches_file).exists():
+        print(f"❌ 比赛数据文件不存在：{matches_file}")
+        sys.exit(1)
+    
+    print(f"📁 加载比赛数据：{matches_file}")
+    matches = load_matches(matches_file)
+    
+    total_matches = sum(len(league_matches) for league_matches in matches.values() if isinstance(league_matches, list))
+    print(f"📊 总比赛数：{total_matches}")
+    print(f"🏆 联赛数：{len([k for k, v in matches.items() if isinstance(v, list)])}")
+    
+    # 生成预测
+    print("\n🤖 使用 ML 模型生成预测...")
+    predictions = generate_predictions(matches, output_file_data)
+    
+    # 同时复制到 web 目录
+    import shutil
+    print(f"\n📦 复制到 web 目录...")
+    shutil.copy(output_file_data, output_file_web)
+    print(f"   ✅ 已复制到：{output_file_web}")
+    
+    # 统计准确率（如果有实际比分）
+    print("\n📈 预测准确率统计:")
+    for league_code, league_predictions in predictions.items():
+        if not league_predictions:
+            continue
+        total = len(league_predictions)
+        correct = sum(1 for p in league_predictions if p.get('correct', False))
+        has_result = sum(1 for p in league_predictions if 'actual_score' in p)
+        if has_result > 0:
+            accuracy = correct / has_result * 100
+            print(f"   {league_code}: {correct}/{has_result} = {accuracy:.2f}%")
+    
+    print("\n✅ 数据生成完成！")
+
+
+if __name__ == '__main__':
+    main()
