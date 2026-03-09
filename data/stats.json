@@ -7,28 +7,28 @@
   "by_league": {
     "bundesliga": {
       "predictions": 30,
-      "correct": 13,
-      "accuracy": 43.333333333333336
+      "correct": 8,
+      "accuracy": 26.666666666666668
     },
     "epl": {
       "predictions": 30,
-      "correct": 13,
-      "accuracy": 43.333333333333336
+      "correct": 10,
+      "accuracy": 33.33333333333333
     },
     "laliga": {
       "predictions": 30,
-      "correct": 9,
-      "accuracy": 30.0
+      "correct": 13,
+      "accuracy": 43.333333333333336
     },
     "ligue1": {
       "predictions": 30,
-      "correct": 14,
-      "accuracy": 46.666666666666664
+      "correct": 15,
+      "accuracy": 50.0
     },
     "seriea": {
       "predictions": 30,
-      "correct": 15,
-      "accuracy": 50.0
+      "correct": 9,
+      "accuracy": 30.0
     }
   }
 }
