@@ -12,23 +12,18 @@
     },
     "bundesliga": {
       "predictions": 30,
-      "correct": 9,
-      "accuracy": 30.0
+      "correct": 11,
+      "accuracy": 36.666666666666664
     },
     "epl": {
       "predictions": 30,
-      "correct": 11,
-      "accuracy": 36.666666666666664
+      "correct": 10,
+      "accuracy": 33.33333333333333
     },
     "laliga": {
       "predictions": 30,
       "correct": 12,
       "accuracy": 40.0
-    },
-    "ligue_1": {
-      "predictions": 0,
-      "correct": 0,
-      "accuracy": 0
     }
   }
 }

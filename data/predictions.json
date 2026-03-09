@@ -4,28 +4,28 @@
       "match_date": "2026-03-05T20:00:00",
       "home_team": "Tottenham Hotspur FC",
       "away_team": "Crystal Palace FC",
-      "predicted": 1,
-      "confidence": 73.18704304466135,
+      "predicted": 0,
+      "confidence": 84.809402056746,
       "actual_score": "1-3",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2026-03-04T20:15:00",
       "home_team": "Newcastle United FC",
       "away_team": "Manchester United FC",
-      "predicted": 0,
-      "confidence": 57.83155046061931,
+      "predicted": 2,
+      "confidence": 73.8575031369561,
       "actual_score": "2-1",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2026-03-04T19:30:00",
       "home_team": "Aston Villa FC",
       "away_team": "Chelsea FC",
-      "predicted": 1,
-      "confidence": 76.34229267885607,
+      "predicted": 2,
+      "confidence": 79.37582556929843,
       "actual_score": "1-4",
       "actual_result": "客胜",
       "correct": false
@@ -34,18 +34,18 @@
       "match_date": "2026-03-04T19:30:00",
       "home_team": "Brighton & Hove Albion FC",
       "away_team": "Arsenal FC",
-      "predicted": 0,
-      "confidence": 60.24107675418219,
+      "predicted": 1,
+      "confidence": 63.48456469523265,
       "actual_score": "0-1",
       "actual_result": "客胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2026-03-04T19:30:00",
       "home_team": "Fulham FC",
       "away_team": "West Ham United FC",
       "predicted": 2,
-      "confidence": 65.66027650299014,
+      "confidence": 58.932267797874,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -55,7 +55,7 @@
       "home_team": "Manchester City FC",
       "away_team": "Nottingham Forest FC",
       "predicted": 2,
-      "confidence": 78.23497824027372,
+      "confidence": 76.03710800968895,
       "actual_score": "2-2",
       "actual_result": "平局",
       "correct": false
@@ -65,7 +65,7 @@
       "home_team": "Wolverhampton Wanderers FC",
       "away_team": "Liverpool FC",
       "predicted": 0,
-      "confidence": 58.20416611707785,
+      "confidence": 71.41175001634988,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": false
@@ -74,8 +74,8 @@
       "match_date": "2026-03-03T19:30:00",
       "home_team": "AFC Bournemouth",
       "away_team": "Brentford FC",
-      "predicted": 2,
-      "confidence": 58.1975893512328,
+      "predicted": 0,
+      "confidence": 84.45128191558615,
       "actual_score": "0-0",
       "actual_result": "平局",
       "correct": false
@@ -84,38 +84,38 @@
       "match_date": "2026-03-03T19:30:00",
       "home_team": "Everton FC",
       "away_team": "Burnley FC",
-      "predicted": 2,
-      "confidence": 69.22987684967501,
+      "predicted": 0,
+      "confidence": 67.11203979114498,
       "actual_score": "2-0",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2026-03-03T19:30:00",
       "home_team": "Leeds United FC",
       "away_team": "Sunderland AFC",
-      "predicted": 1,
-      "confidence": 67.42947643200638,
+      "predicted": 0,
+      "confidence": 74.50932701715995,
       "actual_score": "0-1",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2026-03-01T16:30:00",
       "home_team": "Arsenal FC",
       "away_team": "Chelsea FC",
-      "predicted": 1,
-      "confidence": 59.539999754501366,
+      "predicted": 2,
+      "confidence": 75.67791261532949,
       "actual_score": "2-1",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2026-03-01T14:00:00",
       "home_team": "Brighton & Hove Albion FC",
       "away_team": "Nottingham Forest FC",
-      "predicted": 1,
-      "confidence": 72.48105395037611,
+      "predicted": 0,
+      "confidence": 69.71080225912908,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": false
@@ -125,7 +125,7 @@
       "home_team": "Fulham FC",
       "away_team": "Tottenham Hotspur FC",
       "predicted": 2,
-      "confidence": 59.64732173833631,
+      "confidence": 55.95213376209329,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": true
@@ -134,18 +134,18 @@
       "match_date": "2026-03-01T14:00:00",
       "home_team": "Manchester United FC",
       "away_team": "Crystal Palace FC",
-      "predicted": 2,
-      "confidence": 63.472864015499134,
+      "predicted": 1,
+      "confidence": 65.45022529533028,
       "actual_score": "2-1",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2026-02-28T17:30:00",
       "home_team": "Leeds United FC",
       "away_team": "Manchester City FC",
       "predicted": 0,
-      "confidence": 66.29141876065778,
+      "confidence": 79.84325135048587,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": true
@@ -155,7 +155,7 @@
       "home_team": "Burnley FC",
       "away_team": "Brentford FC",
       "predicted": 2,
-      "confidence": 82.11640332004407,
+      "confidence": 60.28031161717374,
       "actual_score": "3-4",
       "actual_result": "客胜",
       "correct": false
@@ -164,18 +164,18 @@
       "match_date": "2026-02-28T15:00:00",
       "home_team": "Liverpool FC",
       "away_team": "West Ham United FC",
-      "predicted": 2,
-      "confidence": 79.14081478027701,
+      "predicted": 0,
+      "confidence": 68.02754242954458,
       "actual_score": "5-2",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2026-02-28T15:00:00",
       "home_team": "Newcastle United FC",
       "away_team": "Everton FC",
       "predicted": 2,
-      "confidence": 60.03246029867063,
+      "confidence": 60.54432876571868,
       "actual_score": "2-3",
       "actual_result": "客胜",
       "correct": false
@@ -184,8 +184,8 @@
       "match_date": "2026-02-28T12:30:00",
       "home_team": "AFC Bournemouth",
       "away_team": "Sunderland AFC",
-      "predicted": 0,
-      "confidence": 65.92804729374515,
+      "predicted": 2,
+      "confidence": 55.47366274515999,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -194,18 +194,18 @@
       "match_date": "2026-02-27T20:00:00",
       "home_team": "Wolverhampton Wanderers FC",
       "away_team": "Aston Villa FC",
-      "predicted": 0,
-      "confidence": 83.74888918360351,
+      "predicted": 2,
+      "confidence": 62.46561454849514,
       "actual_score": "2-0",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2026-02-23T20:00:00",
       "home_team": "Everton FC",
       "away_team": "Manchester United FC",
       "predicted": 0,
-      "confidence": 66.2789314083691,
+      "confidence": 67.03058899197255,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": true
@@ -214,8 +214,8 @@
       "match_date": "2026-02-22T16:30:00",
       "home_team": "Tottenham Hotspur FC",
       "away_team": "Arsenal FC",
-      "predicted": 1,
-      "confidence": 67.44311115954821,
+      "predicted": 2,
+      "confidence": 71.52957676789526,
       "actual_score": "1-4",
       "actual_result": "客胜",
       "correct": false
@@ -225,7 +225,7 @@
       "home_team": "Sunderland AFC",
       "away_team": "Fulham FC",
       "predicted": 0,
-      "confidence": 81.4728032620791,
+      "confidence": 58.03444836423659,
       "actual_score": "1-3",
       "actual_result": "客胜",
       "correct": true
@@ -234,28 +234,28 @@
       "match_date": "2026-02-22T14:00:00",
       "home_team": "Crystal Palace FC",
       "away_team": "Wolverhampton Wanderers FC",
-      "predicted": 2,
-      "confidence": 76.6089302869687,
+      "predicted": 1,
+      "confidence": 80.05001063104413,
       "actual_score": "1-0",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2026-02-22T14:00:00",
       "home_team": "Nottingham Forest FC",
       "away_team": "Liverpool FC",
-      "predicted": 2,
-      "confidence": 66.14747146806465,
+      "predicted": 0,
+      "confidence": 73.6869129938359,
       "actual_score": "0-1",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2026-02-21T20:00:00",
       "home_team": "Manchester City FC",
       "away_team": "Newcastle United FC",
       "predicted": 2,
-      "confidence": 62.94813501248489,
+      "confidence": 55.32243340086495,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": true
@@ -265,7 +265,7 @@
       "home_team": "West Ham United FC",
       "away_team": "AFC Bournemouth",
       "predicted": 2,
-      "confidence": 81.37460049550333,
+      "confidence": 58.21528144578473,
       "actual_score": "0-0",
       "actual_result": "平局",
       "correct": false
@@ -275,7 +275,7 @@
       "home_team": "Aston Villa FC",
       "away_team": "Leeds United FC",
       "predicted": 1,
-      "confidence": 64.02706747734584,
+      "confidence": 60.80026037970911,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": true
@@ -284,18 +284,18 @@
       "match_date": "2026-02-21T15:00:00",
       "home_team": "Brentford FC",
       "away_team": "Brighton & Hove Albion FC",
-      "predicted": 0,
-      "confidence": 57.29436922182255,
+      "predicted": 2,
+      "confidence": 58.08466137496578,
       "actual_score": "0-2",
       "actual_result": "客胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2026-02-21T15:00:00",
       "home_team": "Chelsea FC",
       "away_team": "Burnley FC",
-      "predicted": 0,
-      "confidence": 82.12916546713507,
+      "predicted": 2,
+      "confidence": 82.78177148542893,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -307,7 +307,7 @@
       "home_team": "沃尔索尔",
       "away_team": "奥德汉姆",
       "predicted": 2,
-      "confidence": 67.53145385610387,
+      "confidence": 76.24880844143978,
       "actual_score": "1-2",
       "actual_result": "客胜",
       "correct": false
@@ -316,8 +316,8 @@
       "match_date": "2024-12-30T03:45:00",
       "home_team": "特兰米尔",
       "away_team": "巴洛1",
-      "predicted": 2,
-      "confidence": 57.21272601005288,
+      "predicted": 1,
+      "confidence": 74.86451042516615,
       "actual_score": "1-3",
       "actual_result": "客胜",
       "correct": false
@@ -326,38 +326,38 @@
       "match_date": "2024-12-30T03:45:00",
       "home_team": "索尔福德市",
       "away_team": "弗利特伍德",
-      "predicted": 0,
-      "confidence": 70.85936381430612,
+      "predicted": 1,
+      "confidence": 65.11235335222517,
       "actual_score": "0-0",
       "actual_result": "平局",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-30T03:45:00",
       "home_team": "米尔顿凯恩斯",
       "away_team": "诺茨郡",
-      "predicted": 2,
-      "confidence": 76.19651466707782,
+      "predicted": 1,
+      "confidence": 63.914035726355095,
       "actual_score": "1-1",
       "actual_result": "平局",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-30T03:45:00",
       "home_team": "格林斯比",
       "away_team": "什鲁斯伯里",
-      "predicted": 0,
-      "confidence": 82.87818736054369,
+      "predicted": 2,
+      "confidence": 65.04480371816886,
       "actual_score": "1-0",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-30T03:45:00",
       "home_team": "吉林汉姆",
       "away_team": "科切斯特联",
-      "predicted": 2,
-      "confidence": 77.85884239403802,
+      "predicted": 0,
+      "confidence": 55.11342641657482,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -366,18 +366,18 @@
       "match_date": "2024-12-30T03:45:00",
       "home_team": "克劳利",
       "away_team": "布罗姆利",
-      "predicted": 0,
-      "confidence": 74.97075319820232,
+      "predicted": 2,
+      "confidence": 73.59547324711559,
       "actual_score": "1-3",
       "actual_result": "客胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-30T03:45:00",
       "home_team": "切斯特菲尔德",
       "away_team": "剑桥联",
       "predicted": 2,
-      "confidence": 71.1631121148286,
+      "confidence": 58.331488606373235,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -387,7 +387,7 @@
       "home_team": "切尔滕汉姆",
       "away_team": "斯文登",
       "predicted": 2,
-      "confidence": 72.03665348841788,
+      "confidence": 64.7419363404277,
       "actual_score": "0-2",
       "actual_result": "客胜",
       "correct": false
@@ -396,28 +396,28 @@
       "match_date": "2024-12-30T03:45:00",
       "home_team": "布里斯托流浪",
       "away_team": "巴尼特",
-      "predicted": 0,
-      "confidence": 66.47241780864124,
+      "predicted": 1,
+      "confidence": 67.259455839052,
       "actual_score": "0-2",
       "actual_result": "客胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-30T03:45:00",
       "home_team": "阿克灵顿",
       "away_team": "哈洛贾特1",
-      "predicted": 1,
-      "confidence": 76.06275714479291,
+      "predicted": 2,
+      "confidence": 64.33560590267871,
       "actual_score": "1-0",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-30T03:30:00",
       "home_team": "纽波特",
       "away_team": "克鲁",
       "predicted": 2,
-      "confidence": 69.7427468538411,
+      "confidence": 69.85184434987666,
       "actual_score": "2-0",
       "actual_result": "主胜",
       "correct": true
@@ -427,7 +427,7 @@
       "home_team": "布里斯托流浪",
       "away_team": "布罗姆利",
       "predicted": 2,
-      "confidence": 84.35671297462886,
+      "confidence": 74.0777723320495,
       "actual_score": "2-3",
       "actual_result": "客胜",
       "correct": false
@@ -436,8 +436,8 @@
       "match_date": "2024-12-26T23:00:00",
       "home_team": "纽波特",
       "away_team": "巴尼特",
-      "predicted": 0,
-      "confidence": 64.6112471451519,
+      "predicted": 2,
+      "confidence": 82.31844902728825,
       "actual_score": "0-0",
       "actual_result": "平局",
       "correct": false
@@ -446,8 +446,8 @@
       "match_date": "2024-12-26T23:00:00",
       "home_team": "沃尔索尔",
       "away_team": "克鲁",
-      "predicted": 1,
-      "confidence": 66.51835148486192,
+      "predicted": 0,
+      "confidence": 61.67072148257923,
       "actual_score": "1-0",
       "actual_result": "主胜",
       "correct": false
@@ -456,18 +456,18 @@
       "match_date": "2024-12-26T23:00:00",
       "home_team": "特兰米尔",
       "away_team": "弗利特伍德",
-      "predicted": 0,
-      "confidence": 73.31041766506269,
+      "predicted": 2,
+      "confidence": 69.53330283620011,
       "actual_score": "1-0",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-26T23:00:00",
       "home_team": "索尔福德市",
       "away_team": "哈洛贾特",
       "predicted": 2,
-      "confidence": 75.3349575582672,
+      "confidence": 64.3304393965522,
       "actual_score": "1-0",
       "actual_result": "主胜",
       "correct": true
@@ -477,7 +477,7 @@
       "home_team": "米尔顿凯恩斯",
       "away_team": "斯文登",
       "predicted": 2,
-      "confidence": 68.08615353021638,
+      "confidence": 70.2175590681681,
       "actual_score": "1-0",
       "actual_result": "主胜",
       "correct": true
@@ -486,8 +486,8 @@
       "match_date": "2024-12-26T23:00:00",
       "home_team": "格林斯比",
       "away_team": "奥德汉姆",
-      "predicted": 2,
-      "confidence": 61.30376502533509,
+      "predicted": 0,
+      "confidence": 77.26809154612754,
       "actual_score": "0-0",
       "actual_result": "平局",
       "correct": false
@@ -496,28 +496,28 @@
       "match_date": "2024-12-26T23:00:00",
       "home_team": "吉林汉姆",
       "away_team": "剑桥联",
-      "predicted": 1,
-      "confidence": 61.72810664932097,
+      "predicted": 2,
+      "confidence": 84.87952207213816,
       "actual_score": "1-1",
       "actual_result": "平局",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-26T23:00:00",
       "home_team": "克劳利",
       "away_team": "科切斯特联",
-      "predicted": 1,
-      "confidence": 61.666507967654,
+      "predicted": 2,
+      "confidence": 80.65981550517996,
       "actual_score": "1-1",
       "actual_result": "平局",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-26T23:00:00",
       "home_team": "切斯特菲尔德",
       "away_team": "诺茨郡",
-      "predicted": 0,
-      "confidence": 69.76488409912695,
+      "predicted": 1,
+      "confidence": 66.50575750000412,
       "actual_score": "2-0",
       "actual_result": "主胜",
       "correct": false
@@ -526,18 +526,18 @@
       "match_date": "2024-12-26T23:00:00",
       "home_team": "切尔滕汉姆",
       "away_team": "什鲁斯伯里",
-      "predicted": 2,
-      "confidence": 56.59039926503338,
+      "predicted": 0,
+      "confidence": 81.74995605108049,
       "actual_score": "3-1",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-26T23:00:00",
       "home_team": "阿克灵顿",
       "away_team": "巴洛",
       "predicted": 2,
-      "confidence": 62.39954562324075,
+      "confidence": 81.79521221405605,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": true
@@ -546,28 +546,28 @@
       "match_date": "2024-12-20T23:00:00",
       "home_team": "巴尼特",
       "away_team": "索尔福德市",
-      "predicted": 1,
-      "confidence": 79.20179123925682,
+      "predicted": 0,
+      "confidence": 64.49809382985414,
       "actual_score": "1-3",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-20T23:00:00",
       "home_team": "哈洛贾特",
       "away_team": "米尔顿凯恩斯",
-      "predicted": 2,
-      "confidence": 79.73606771869565,
+      "predicted": 0,
+      "confidence": 55.94125871694113,
       "actual_score": "0-4",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-20T23:00:00",
       "home_team": "弗利特伍德",
       "away_team": "吉林汉姆",
       "predicted": 0,
-      "confidence": 56.25413009576266,
+      "confidence": 80.08938985240017,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": false
@@ -576,8 +576,8 @@
       "match_date": "2024-12-20T23:00:00",
       "home_team": "科切斯特联",
       "away_team": "纽波特",
-      "predicted": 1,
-      "confidence": 79.12449291718399,
+      "predicted": 0,
+      "confidence": 61.524412758790476,
       "actual_score": "4-1",
       "actual_result": "主胜",
       "correct": false
@@ -587,7 +587,7 @@
       "home_team": "斯文登",
       "away_team": "克劳利",
       "predicted": 0,
-      "confidence": 66.29956332035562,
+      "confidence": 72.68238656956024,
       "actual_score": "1-0",
       "actual_result": "主胜",
       "correct": false
@@ -596,8 +596,8 @@
       "match_date": "2024-12-20T23:00:00",
       "home_team": "什鲁斯伯里",
       "away_team": "切斯特菲尔德",
-      "predicted": 2,
-      "confidence": 57.90281269751441,
+      "predicted": 1,
+      "confidence": 75.28733079690521,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -609,7 +609,7 @@
       "home_team": "曼彻斯特联",
       "away_team": "纽卡斯尔联",
       "predicted": 0,
-      "confidence": 55.66107030106129,
+      "confidence": 67.77607255259653,
       "actual_score": "0-2",
       "actual_result": "客胜",
       "correct": true
@@ -618,28 +618,28 @@
       "match_date": "2024-12-31T03:45:00",
       "home_team": "阿斯顿维拉",
       "away_team": "布莱顿",
-      "predicted": 1,
-      "confidence": 57.67293412587124,
+      "predicted": 2,
+      "confidence": 66.47705599841144,
       "actual_score": "2-2",
       "actual_result": "平局",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-31T03:45:00",
       "home_team": "伊普斯维奇",
       "away_team": "切尔西",
-      "predicted": 2,
-      "confidence": 84.5355025180008,
+      "predicted": 0,
+      "confidence": 69.70582850726885,
       "actual_score": "2-0",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-30T01:15:00",
       "home_team": "西汉姆联",
       "away_team": "利物浦",
       "predicted": 2,
-      "confidence": 70.07984744285542,
+      "confidence": 81.4768229640289,
       "actual_score": "0-5",
       "actual_result": "客胜",
       "correct": false
@@ -649,7 +649,7 @@
       "home_team": "水晶宫",
       "away_team": "南安普敦",
       "predicted": 2,
-      "confidence": 58.973296242220975,
+      "confidence": 83.9396956810286,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": true
@@ -658,18 +658,18 @@
       "match_date": "2024-12-29T23:00:00",
       "home_team": "埃弗顿",
       "away_team": "诺丁汉森林",
-      "predicted": 2,
-      "confidence": 84.05905796729164,
+      "predicted": 0,
+      "confidence": 67.88706523855238,
       "actual_score": "0-2",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-29T23:00:00",
       "home_team": "富勒姆",
       "away_team": "伯恩茅斯",
       "predicted": 2,
-      "confidence": 82.81152998077602,
+      "confidence": 76.32075341013272,
       "actual_score": "2-2",
       "actual_result": "平局",
       "correct": false
@@ -678,78 +678,78 @@
       "match_date": "2024-12-29T23:00:00",
       "home_team": "托特纳姆热刺",
       "away_team": "狼队",
-      "predicted": 1,
-      "confidence": 79.00769649562115,
+      "predicted": 2,
+      "confidence": 77.77719263418925,
       "actual_score": "2-2",
       "actual_result": "平局",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-29T22:30:00",
       "home_team": "莱斯特城",
       "away_team": "曼彻斯特城",
-      "predicted": 0,
-      "confidence": 68.69949072535933,
+      "predicted": 2,
+      "confidence": 81.09701096536395,
       "actual_score": "0-2",
       "actual_result": "客胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-28T04:15:00",
       "home_team": "阿森纳",
       "away_team": "伊普斯维奇",
-      "predicted": 1,
-      "confidence": 82.54800023392147,
+      "predicted": 2,
+      "confidence": 80.66036187816553,
       "actual_score": "1-0",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-28T03:30:00",
       "home_team": "布莱顿",
       "away_team": "布伦特福德",
-      "predicted": 2,
-      "confidence": 65.2667052298712,
+      "predicted": 1,
+      "confidence": 57.27526633444768,
       "actual_score": "0-0",
       "actual_result": "平局",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-27T04:00:00",
       "home_team": "利物浦",
       "away_team": "莱斯特城",
-      "predicted": 2,
-      "confidence": 84.44386212342036,
+      "predicted": 1,
+      "confidence": 83.02750271381505,
       "actual_score": "3-1",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-27T01:30:00",
       "home_team": "狼队",
       "away_team": "曼彻斯特联1",
-      "predicted": 0,
-      "confidence": 78.43678523875903,
+      "predicted": 2,
+      "confidence": 57.69431154947573,
       "actual_score": "2-0",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-26T23:00:00",
       "home_team": "伯恩茅斯",
       "away_team": "水晶宫",
-      "predicted": 1,
-      "confidence": 81.14672435602122,
+      "predicted": 2,
+      "confidence": 81.11235210773377,
       "actual_score": "0-0",
       "actual_result": "平局",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-26T23:00:00",
       "home_team": "纽卡斯尔联",
       "away_team": "阿斯顿维拉1",
-      "predicted": 1,
-      "confidence": 65.90343909426655,
+      "predicted": 0,
+      "confidence": 75.81244705738986,
       "actual_score": "3-0",
       "actual_result": "主胜",
       "correct": false
@@ -758,18 +758,18 @@
       "match_date": "2024-12-26T23:00:00",
       "home_team": "诺丁汉森林",
       "away_team": "托特纳姆热刺1",
-      "predicted": 2,
-      "confidence": 71.26727375695359,
+      "predicted": 0,
+      "confidence": 73.91148418710178,
       "actual_score": "1-0",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-26T23:00:00",
       "home_team": "南安普敦",
       "away_team": "西汉姆联",
-      "predicted": 1,
-      "confidence": 64.1747946227116,
+      "predicted": 2,
+      "confidence": 73.71254369240715,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -779,7 +779,7 @@
       "home_team": "切尔西",
       "away_team": "富勒姆",
       "predicted": 0,
-      "confidence": 77.73316418054348,
+      "confidence": 75.45062152966108,
       "actual_score": "1-2",
       "actual_result": "客胜",
       "correct": true
@@ -789,7 +789,7 @@
       "home_team": "曼彻斯特城",
       "away_team": "埃弗顿",
       "predicted": 2,
-      "confidence": 71.75593053844062,
+      "confidence": 80.96767185827923,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -798,18 +798,18 @@
       "match_date": "2024-12-23T00:30:00",
       "home_team": "托特纳姆热刺",
       "away_team": "利物浦",
-      "predicted": 2,
-      "confidence": 68.01114652996407,
+      "predicted": 0,
+      "confidence": 56.88400087618735,
       "actual_score": "3-6",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-22T22:00:00",
       "home_team": "埃弗顿",
       "away_team": "切尔西",
       "predicted": 0,
-      "confidence": 78.76233397721703,
+      "confidence": 81.62204991889047,
       "actual_score": "0-0",
       "actual_result": "平局",
       "correct": false
@@ -819,7 +819,7 @@
       "home_team": "富勒姆",
       "away_team": "南安普敦",
       "predicted": 0,
-      "confidence": 84.04070262546372,
+      "confidence": 82.31339428601059,
       "actual_score": "0-0",
       "actual_result": "平局",
       "correct": false
@@ -828,8 +828,8 @@
       "match_date": "2024-12-22T22:00:00",
       "home_team": "莱斯特城",
       "away_team": "狼队",
-      "predicted": 2,
-      "confidence": 81.66042289411668,
+      "predicted": 1,
+      "confidence": 60.11031626014674,
       "actual_score": "0-3",
       "actual_result": "客胜",
       "correct": false
@@ -839,7 +839,7 @@
       "home_team": "曼彻斯特联",
       "away_team": "伯恩茅斯",
       "predicted": 2,
-      "confidence": 81.64082722786898,
+      "confidence": 75.79513271329411,
       "actual_score": "0-3",
       "actual_result": "客胜",
       "correct": false
@@ -849,7 +849,7 @@
       "home_team": "水晶宫",
       "away_team": "阿森纳",
       "predicted": 2,
-      "confidence": 59.384367159880796,
+      "confidence": 66.34179643821787,
       "actual_score": "1-5",
       "actual_result": "客胜",
       "correct": false
@@ -858,18 +858,18 @@
       "match_date": "2024-12-21T23:00:00",
       "home_team": "布伦特福德",
       "away_team": "诺丁汉森林",
-      "predicted": 2,
-      "confidence": 76.9170571823943,
+      "predicted": 0,
+      "confidence": 65.50198071660492,
       "actual_score": "0-2",
       "actual_result": "客胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-21T23:00:00",
       "home_team": "伊普斯维奇",
       "away_team": "纽卡斯尔联",
-      "predicted": 1,
-      "confidence": 64.2330410938493,
+      "predicted": 2,
+      "confidence": 61.37679684124018,
       "actual_score": "0-4",
       "actual_result": "客胜",
       "correct": false
@@ -879,7 +879,7 @@
       "home_team": "西汉姆联",
       "away_team": "布莱顿",
       "predicted": 2,
-      "confidence": 68.97515117644262,
+      "confidence": 74.26315440769861,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -889,7 +889,7 @@
       "home_team": "阿斯顿维拉",
       "away_team": "曼彻斯特城",
       "predicted": 2,
-      "confidence": 62.43830326081794,
+      "confidence": 69.77646273671962,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": true
@@ -898,8 +898,8 @@
       "match_date": "2024-12-17T04:00:00",
       "home_team": "伯恩茅斯",
       "away_team": "西汉姆联",
-      "predicted": 0,
-      "confidence": 68.33749789285567,
+      "predicted": 2,
+      "confidence": 77.1414210585607,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -911,7 +911,7 @@
       "home_team": "沃尔夫斯堡",
       "away_team": "多特蒙德1",
       "predicted": 2,
-      "confidence": 59.81941483962453,
+      "confidence": 56.951437756478065,
       "actual_score": "1-3",
       "actual_result": "客胜",
       "correct": false
@@ -920,18 +920,18 @@
       "match_date": "2024-12-22T22:30:00",
       "home_team": "波鸿",
       "away_team": "海登海姆",
-      "predicted": 2,
-      "confidence": 57.45602980337304,
+      "predicted": 0,
+      "confidence": 65.33761920405591,
       "actual_score": "2-0",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-22T01:30:00",
       "home_team": "勒沃库森",
       "away_team": "弗赖堡",
-      "predicted": 0,
-      "confidence": 63.330471564813806,
+      "predicted": 1,
+      "confidence": 63.56844489853273,
       "actual_score": "5-1",
       "actual_result": "主胜",
       "correct": false
@@ -941,7 +941,7 @@
       "home_team": "法兰克福",
       "away_team": "美因茨1",
       "predicted": 2,
-      "confidence": 78.9358896435061,
+      "confidence": 77.45152520851134,
       "actual_score": "1-3",
       "actual_result": "客胜",
       "correct": false
@@ -951,7 +951,7 @@
       "home_team": "霍芬海姆",
       "away_team": "门兴格拉德巴赫",
       "predicted": 2,
-      "confidence": 57.173361801966855,
+      "confidence": 68.60036997230105,
       "actual_score": "1-2",
       "actual_result": "客胜",
       "correct": false
@@ -961,7 +961,7 @@
       "home_team": "荷尔斯泰因",
       "away_team": "奥格斯堡",
       "predicted": 2,
-      "confidence": 76.66003208245967,
+      "confidence": 69.2973811532567,
       "actual_score": "5-1",
       "actual_result": "主胜",
       "correct": true
@@ -971,7 +971,7 @@
       "home_team": "斯图加特",
       "away_team": "圣保利",
       "predicted": 2,
-      "confidence": 64.9397508558971,
+      "confidence": 58.164911089163176,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -980,18 +980,18 @@
       "match_date": "2024-12-21T22:30:00",
       "home_team": "云达不莱梅",
       "away_team": "柏林联合",
-      "predicted": 2,
-      "confidence": 72.8387507228426,
+      "predicted": 0,
+      "confidence": 73.35089584014285,
       "actual_score": "4-1",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-21T03:30:00",
       "home_team": "拜仁慕尼黑",
       "away_team": "RB莱比锡",
       "predicted": 2,
-      "confidence": 60.64392844625596,
+      "confidence": 72.6101931055051,
       "actual_score": "5-1",
       "actual_result": "主胜",
       "correct": true
@@ -1000,18 +1000,18 @@
       "match_date": "2024-12-21T03:30:00",
       "home_team": "斯图加特",
       "away_team": "奥格斯堡",
-      "predicted": 0,
-      "confidence": 55.50444021379956,
+      "predicted": 2,
+      "confidence": 76.98252826560642,
       "actual_score": "3-0",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-21T03:30:00",
       "home_team": "沃尔夫斯堡",
       "away_team": "拜仁慕尼黑",
       "predicted": 0,
-      "confidence": 78.3413470625135,
+      "confidence": 84.32324662784936,
       "actual_score": "1-2",
       "actual_result": "客胜",
       "correct": true
@@ -1020,28 +1020,28 @@
       "match_date": "2024-12-21T03:30:00",
       "home_team": "法兰克福",
       "away_team": "门兴格拉德巴赫1",
-      "predicted": 1,
-      "confidence": 83.46909322378912,
+      "predicted": 2,
+      "confidence": 78.52089042288532,
       "actual_score": "2-1",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-21T03:30:00",
       "home_team": "海登海姆",
       "away_team": "弗赖堡",
-      "predicted": 0,
-      "confidence": 70.10570357871589,
+      "predicted": 2,
+      "confidence": 75.55875096713541,
       "actual_score": "3-2",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-21T03:30:00",
       "home_team": "勒沃库森",
       "away_team": "波鸿",
       "predicted": 2,
-      "confidence": 69.0283126203382,
+      "confidence": 66.47913932909371,
       "actual_score": "4-0",
       "actual_result": "主胜",
       "correct": true
@@ -1051,7 +1051,7 @@
       "home_team": "柏林联合",
       "away_team": "科隆",
       "predicted": 2,
-      "confidence": 75.4627011908899,
+      "confidence": 70.34056761821316,
       "actual_score": "2-0",
       "actual_result": "主胜",
       "correct": true
@@ -1061,7 +1061,7 @@
       "home_team": "沃尔夫斯堡",
       "away_team": "斯图加特",
       "predicted": 1,
-      "confidence": 64.1690290489815,
+      "confidence": 71.02053855310062,
       "actual_score": "1-0",
       "actual_result": "主胜",
       "correct": false
@@ -1070,18 +1070,18 @@
       "match_date": "2024-12-20T22:30:00",
       "home_team": "弗赖堡",
       "away_team": "柏林赫塔",
-      "predicted": 0,
-      "confidence": 83.52632303708728,
+      "predicted": 2,
+      "confidence": 55.02775396757124,
       "actual_score": "4-1",
       "actual_result": "主胜",
-      "correct": false
+      "correct": true
     },
     {
       "match_date": "2024-12-20T03:30:00",
       "home_team": "霍芬海姆",
       "away_team": "达姆施塔特",
-      "predicted": 2,
-      "confidence": 67.14827038628064,
+      "predicted": 0,
+      "confidence": 82.64680482501207,
       "actual_score": "3-3",
       "actual_result": "平局",
       "correct": false
@@ -1090,8 +1090,8 @@
       "match_date": "2024-12-20T03:30:00",
       "home_team": "多特蒙德",
       "away_team": "美因茨",
-      "predicted": 2,
-      "confidence": 79.47654702986975,
+      "predicted": 0,
+      "confidence": 75.04651243777836,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -1100,18 +1100,18 @@
       "match_date": "2024-12-20T01:30:00",
       "home_team": "勒沃库森",
       "away_team": "拜仁慕尼黑",
-      "predicted": 0,
-      "confidence": 73.01702200527652,
+      "predicted": 2,
+      "confidence": 70.65722377270204,
       "actual_score": "1-2",
       "actual_result": "客胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-20T01:30:00",
       "home_team": "云达不莱梅",
       "away_team": "RB莱比锡",
       "predicted": 2,
-      "confidence": 60.81435141034001,
+      "confidence": 81.40486525662435,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
@@ -1120,18 +1120,18 @@
       "match_date": "2024-12-20T00:30:00",
       "home_team": "科隆",
       "away_team": "斯图加特",
-      "predicted": 2,
-      "confidence": 77.76635152979982,
+      "predicted": 1,
+      "confidence": 66.29233196472556,
       "actual_score": "1-0",
       "actual_result": "主胜",
-      "correct": true
+      "correct": false
     },
     {
       "match_date": "2024-12-19T22:30:00",
       "home_team": "沙尔克04",
       "away_team": "比勒菲尔德",
       "predicted": 2,
-      "confidence": 77.58559574879385,
+      "confidence": 83.53073349961898,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -1141,7 +1141,7 @@
       "home_team": "RB莱比锡",
       "away_team": "科隆",
       "predicted": 2,
-      "confidence": 62.4089377722844,
+      "confidence": 71.46795828544197,
       "actual_score": "0-0",
       "actual_result": "平局",
       "correct": false
@@ -1151,7 +1151,7 @@
       "home_team": "美因茨",
       "away_team": "云达不莱梅",
       "predicted": 2,
-      "confidence": 68.92165672500187,
+      "confidence": 62.646795260238136,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -1161,7 +1161,7 @@
       "home_team": "弗赖堡",
       "away_team": "勒沃库森",
       "predicted": 2,
-      "confidence": 74.85060788487104,
+      "confidence": 60.731943423312984,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": true
@@ -1171,7 +1171,7 @@
       "home_team": "柏林联合",
       "away_team": "多特蒙德",
       "predicted": 2,
-      "confidence": 75.44048986956051,
+      "confidence": 57.17578420958582,
       "actual_score": "2-1",
       "actual_result": "主胜",
       "correct": true
@@ -1181,7 +1181,7 @@
       "home_team": "柏林赫塔",
       "away_team": "多特蒙德",
       "predicted": 2,
-      "confidence": 57.19839397040959,
+      "confidence": 74.01772206774244,
       "actual_score": "3-2",
       "actual_result": "主胜",
       "correct": true
@@ -1191,7 +1191,7 @@
       "home_team": "波鸿",
       "away_team": "柏林联合",
       "predicted": 2,
-      "confidence": 71.28788349516184,
+      "confidence": 84.6055413871733,
       "actual_score": "0-1",
       "actual_result": "客胜",
       "correct": false
@@ -1201,11 +1201,10 @@
       "home_team": "霍芬海姆",
       "away_team": "门兴格拉德巴赫",
       "predicted": 2,
-      "confidence": 59.480402407371265,
+      "confidence": 67.39099746582784,
       "actual_score": "1-1",
       "actual_result": "平局",
       "correct": false
     }
-  ],
-  "ligue_1": []
+  ]
 }
