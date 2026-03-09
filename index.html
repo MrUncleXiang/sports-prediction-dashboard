@@ -371,11 +371,13 @@
 
         // 加载数据
         async function loadData() {
-            console.log('[DEBUG] 开始加载数据，DATA_BASE:', DATA_BASE);
+            // 缓存破坏参数 - 强制加载最新数据
+            const cacheBuster = `?t=${Date.now()}`;
+            console.log('[DEBUG] 开始加载数据，DATA_BASE:', DATA_BASE, 'cacheBuster:', cacheBuster);
             try {
                 // 加载联赛列表
                 console.log('[DEBUG] 加载 leagues.json...');
-                const leaguesResponse = await fetch(`${DATA_BASE}/leagues.json`);
+                const leaguesResponse = await fetch(`${DATA_BASE}/leagues.json${cacheBuster}`);
                 if (!leaguesResponse.ok) {
                     throw new Error(`leagues.json 加载失败：${leaguesResponse.status} ${leaguesResponse.statusText}`);
                 }
@@ -384,21 +386,39 @@
                 
                 // 加载预测数据
                 console.log('[DEBUG] 加载 predictions.json...');
-                const predictionsResponse = await fetch(`${DATA_BASE}/predictions.json`);
+                const predictionsResponse = await fetch(`${DATA_BASE}/predictions.json${cacheBuster}`);
                 if (!predictionsResponse.ok) {
                     throw new Error(`predictions.json 加载失败：${predictionsResponse.status} ${predictionsResponse.statusText}`);
                 }
                 const predictionsData = await predictionsResponse.json();
-                console.log('[DEBUG] predictions.json 加载成功，联赛键:', Object.keys(predictionsData));
+                console.log('[DEBUG] predictions.json 加载成功，联赛键:', Object.keys(predictionsData), '数据量:', JSON.stringify(predictionsData, null, 2).length, 'bytes');
                 
                 // 加载模型数据
                 console.log('[DEBUG] 加载 models.json...');
-                const modelsResponse = await fetch(`${DATA_BASE}/models.json`);
+                const modelsResponse = await fetch(`${DATA_BASE}/models.json${cacheBuster}`);
                 if (!modelsResponse.ok) {
                     throw new Error(`models.json 加载失败：${modelsResponse.status} ${modelsResponse.statusText}`);
                 }
                 const modelsData = await modelsResponse.json();
                 console.log('[DEBUG] models.json 加载成功');
+                
+                // 数据验证
+                console.log('[DEBUG] 验证数据结构...');
+                if (!Array.isArray(leaguesData)) {
+                    throw new Error(`leagues.json 格式错误：期望数组，得到 ${typeof leaguesData}`);
+                }
+                if (typeof predictionsData !== 'object' || predictionsData === null) {
+                    throw new Error(`predictions.json 格式错误：期望对象，得到 ${typeof predictionsData}`);
+                }
+                
+                // 验证每个联赛的数据量
+                leaguesData.forEach(leagueCode => {
+                    const count = predictionsData[leagueCode]?.length || 0;
+                    console.log(`[DEBUG] 联赛 ${leagueCode}: ${count} 场`);
+                    if (count === 0) {
+                        console.warn(`[WARN] 联赛 ${leagueCode} 没有数据！`);
+                    }
+                });
                 
                 // 渲染联赛按钮
                 renderLeagueButtons(leaguesData, predictionsData);
@@ -414,8 +434,11 @@
                 document.getElementById('league-content').style.display = 'block';
                 
                 // 更新时间
-                document.getElementById('last-update').textContent = new Date().toLocaleString('zh-CN');
-                console.log('[DEBUG] 数据加载完成');
+                const updateEl = document.getElementById('last-update');
+                if (updateEl) {
+                    updateEl.textContent = '最后更新：' + new Date().toLocaleString('zh-CN');
+                }
+                console.log('[DEBUG] 数据加载完成，页面渲染成功');
                 
             } catch (error) {
                 console.error('[ERROR] 加载数据失败:', error);
