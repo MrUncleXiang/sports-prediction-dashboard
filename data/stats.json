@@ -1,34 +1,48 @@
 {
   "overall": {
-    "total_predictions": 150,
+    "total_predictions": 180,
     "accuracy": 83.1,
     "avg_confidence": 70.5
   },
   "by_league": {
     "bundesliga": {
       "predictions": 30,
-      "correct": 8,
-      "accuracy": 26.666666666666668
+      "correct": 14,
+      "accuracy": 46.666666666666664,
+      "sport": "football"
     },
     "epl": {
       "predictions": 30,
-      "correct": 10,
-      "accuracy": 33.33333333333333
+      "correct": 9,
+      "accuracy": 30.0,
+      "sport": "football"
     },
     "laliga": {
       "predictions": 30,
-      "correct": 13,
-      "accuracy": 43.333333333333336
+      "correct": 11,
+      "accuracy": 36.666666666666664,
+      "sport": "football"
     },
     "ligue1": {
       "predictions": 30,
-      "correct": 15,
-      "accuracy": 50.0
+      "correct": 12,
+      "accuracy": 40.0,
+      "sport": "football"
     },
     "seriea": {
       "predictions": 30,
       "correct": 9,
-      "accuracy": 30.0
+      "accuracy": 30.0,
+      "sport": "football"
+    },
+    "nba": {
+      "predictions": 30,
+      "correct": 12,
+      "accuracy": 40.0,
+      "home_wins": 16,
+      "away_wins": 14,
+      "home_win_rate": 53.333333333333336,
+      "sport": "basketball"
     }
   }
 }

@@ -366,7 +366,8 @@
             'bundesliga': { name: '德甲', icon: '🇩🇪', color: '#D20515' },
             'seriea': { name: '意甲', icon: '🇮🇹', color: '#008FD7' },
             'ligue_1': { name: '法甲', icon: '🇫🇷', color: '#00235B' },
-            'ligue1': { name: '法甲', icon: '🇫🇷', color: '#00235B' }
+            'ligue1': { name: '法甲', icon: '🇫🇷', color: '#00235B' },
+            'nba': { name: 'NBA', icon: '🏀', color: '#C9082A', sport: 'basketball' }
         };
 
         // 加载数据
@@ -586,14 +587,20 @@
                     <ul class="rules-list">
                         <li><strong>球队 ID 编码</strong> - 使用历史数据对球队进行唯一编码</li>
                         <li><strong>近期战绩</strong> - 计算球队近 5 场比赛的平均表现</li>
-                        <li><strong>进球差趋势</strong> - 分析球队进攻和防守能力变化</li>
+                        ${league.sport === 'basketball' ? 
+                            '<li><strong>得分差趋势</strong> - 分析球队进攻和防守效率变化</li>' : 
+                            '<li><strong>进球差趋势</strong> - 分析球队进攻和防守能力变化</li>'
+                        }
                         <li><strong>主客场优势</strong> - 考虑主场作战的额外加成</li>
                         <li><strong>联赛特征</strong> - 不同联赛的风格差异编码</li>
                     </ul>
                     
                     <h3>预测方式</h3>
                     <ul class="rules-list">
-                        <li><strong>三分类模型</strong> - 预测主胜/平局/客胜三种结果</li>
+                        ${league.sport === 'basketball' ? 
+                            '<li><strong>二分类模型</strong> - 预测主胜/客胜两种结果（篮球无平局）</li>' : 
+                            '<li><strong>三分类模型</strong> - 预测主胜/平局/客胜三种结果</li>'
+                        }
                         <li><strong>置信度评分</strong> - 每个预测附带 0-100% 的置信度</li>
                         <li><strong>滚动更新</strong> - 每场比赛后自动更新球队特征</li>
                         <li><strong>跨联赛训练</strong> - 使用多联赛数据联合训练提升泛化能力</li>
@@ -622,7 +629,7 @@
                                     <td>${formatDate(p.match_date)}</td>
                                     <td>${p.home_team}</td>
                                     <td>${p.away_team}</td>
-                                    <td>${getPredictionText(p.predicted)}</td>
+                                    <td>${getPredictionText(p.predicted, league.sport || 'football')}</td>
                                     <td>
                                         <span class="badge ${getConfidenceBadge(p.confidence)}">
                                             ${(p.confidence || 0).toFixed(0)}%
@@ -697,13 +704,23 @@
         }
 
         // 获取预测文本
-        function getPredictionText(predicted) {
-            const map = {
-                0: '客胜',
-                1: '平局',
-                2: '主胜'
-            };
-            return map[predicted] || predicted;
+        function getPredictionText(predicted, sport = 'football') {
+            if (sport === 'basketball') {
+                // 篮球无平局
+                const map = {
+                    0: '客胜',
+                    2: '主胜'
+                };
+                return map[predicted] || predicted;
+            } else {
+                // 足球有平局
+                const map = {
+                    0: '客胜',
+                    1: '平局',
+                    2: '主胜'
+                };
+                return map[predicted] || predicted;
+            }
         }
 
         // 获取置信度徽章样式
@@ -832,47 +849,93 @@
             const ctx = document.getElementById('distribution-chart');
             if (!ctx) return;
             
+            const league = LEAGUES[leagueCode] || {};
+            const isBasketball = league.sport === 'basketball';
+            
             const homeWins = predictions.filter(p => p.predicted === 2).length;
-            const draws = predictions.filter(p => p.predicted === 1).length;
             const awayWins = predictions.filter(p => p.predicted === 0).length;
             
-            if (distributionChart) {
-                distributionChart.destroy();
-            }
-            
-            distributionChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['主胜', '平局', '客胜'],
-                    datasets: [{
-                        data: [homeWins, draws, awayWins],
-                        backgroundColor: [
-                            '#10b981',
-                            '#f59e0b',
-                            '#ef4444'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const total = homeWins + draws + awayWins;
-                                    const percentage = ((context.raw / total) * 100).toFixed(1);
-                                    return `${context.label}: ${context.raw}场 (${percentage}%)`;
+            if (isBasketball) {
+                // 篮球无平局
+                if (distributionChart) {
+                    distributionChart.destroy();
+                }
+                
+                distributionChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['主胜', '客胜'],
+                        datasets: [{
+                            data: [homeWins, awayWins],
+                            backgroundColor: [
+                                '#10b981',
+                                '#ef4444'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.raw;
+                                        const total = homeWins + awayWins;
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return `${context.label}: ${value}场 (${percentage}%)`;
+                                    }
                                 }
                             }
                         }
                     }
+                });
+            } else {
+                // 足球有平局
+                const draws = predictions.filter(p => p.predicted === 1).length;
+                
+                if (distributionChart) {
+                    distributionChart.destroy();
                 }
-            });
+                
+                distributionChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['主胜', '平局', '客胜'],
+                        datasets: [{
+                            data: [homeWins, draws, awayWins],
+                            backgroundColor: [
+                                '#10b981',
+                                '#f59e0b',
+                                '#ef4444'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const total = homeWins + draws + awayWins;
+                                        const percentage = ((context.raw / total) * 100).toFixed(1);
+                                        return `${context.label}: ${context.raw}场 (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
         }
         
         // 置信度分布直方图
@@ -950,5 +1013,253 @@
             return html;
         }
         </script>
+
+        <!-- 准确率追踪部分 -->
+        <div class="content-card">
+            <h2>📊 历史准确率追踪</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                基于 14,375 场历史比赛的预测表现分析
+                <span class="last-update">数据更新至：2026-03-09</span>
+            </p>
+            
+            <!-- 总体准确率 -->
+            <div class="params-grid" style="margin-bottom: 30px;">
+                <div class="param-item" style="border-left-color: #667eea;">
+                    <label>总预测场次</label>
+                    <div class="value">14,375</div>
+                </div>
+                <div class="param-item" style="border-left-color: #10b981;">
+                    <label>正确预测</label>
+                    <div class="value" style="color: #10b981;">5,930</div>
+                </div>
+                <div class="param-item" style="border-left-color: #f59e0b;">
+                    <label>总体准确率</label>
+                    <div class="value" style="color: #f59e0b;">41.25%</div>
+                </div>
+            </div>
+            
+            <!-- 各联赛准确率对比 -->
+            <h3>🏆 联赛准确率对比</h3>
+            <div class="table-container" style="overflow-x: auto;">
+                <table class="data-table" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                    <thead>
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">联赛</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">总场次</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">正确</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">准确率</th>
+                            <th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">表现</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <td style="padding: 12px;">🥇 英超 (EPL)</td>
+                            <td style="padding: 12px; text-align: center;">3,785</td>
+                            <td style="padding: 12px; text-align: center;">1,623</td>
+                            <td style="padding: 12px; text-align: center; font-weight: bold; color: #10b981;">42.88%</td>
+                            <td style="padding: 12px; text-align: center;"><span class="badge-success">优秀</span></td>
+                        </tr>
+
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <td style="padding: 12px;">🥈 西甲 (LALIGA)</td>
+                            <td style="padding: 12px; text-align: center;">7,295</td>
+                            <td style="padding: 12px; text-align: center;">3,021</td>
+                            <td style="padding: 12px; text-align: center; font-weight: bold; color: #f59e0b;">41.41%</td>
+                            <td style="padding: 12px; text-align: center;"><span class="badge-warning">良好</span></td>
+                        </tr>
+
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <td style="padding: 12px;">🥉 法甲 (LIGUE1)</td>
+                            <td style="padding: 12px; text-align: center;">1,752</td>
+                            <td style="padding: 12px; text-align: center;">704</td>
+                            <td style="padding: 12px; text-align: center; font-weight: bold; color: #f59e0b;">40.18%</td>
+                            <td style="padding: 12px; text-align: center;"><span class="badge-warning">良好</span></td>
+                        </tr>
+
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <td style="padding: 12px;">   德甲 (BUNDESLIGA)</td>
+                            <td style="padding: 12px; text-align: center;">423</td>
+                            <td style="padding: 12px; text-align: center;">162</td>
+                            <td style="padding: 12px; text-align: center; font-weight: bold; color: #6b7280;">38.30%</td>
+                            <td style="padding: 12px; text-align: center;"><span class="badge-info">一般</span></td>
+                        </tr>
+
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <td style="padding: 12px;">   意甲 (SERIEA)</td>
+                            <td style="padding: 12px; text-align: center;">1,120</td>
+                            <td style="padding: 12px; text-align: center;">420</td>
+                            <td style="padding: 12px; text-align: center; font-weight: bold; color: #6b7280;">37.50%</td>
+                            <td style="padding: 12px; text-align: center;"><span class="badge-info">一般</span></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 置信度分层准确率 -->
+            <h3>🎯 置信度分层表现</h3>
+            <div class="params-grid">
+
+                <div class="param-item" style="border-left-color: #10b981;">
+                    <label>高 (≥70%)</label>
+                    <div class="value" style="font-size: 1.2em;">43.63%</div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 5px;">4,559 场</div>
+                </div>
+
+                <div class="param-item" style="border-left-color: #f59e0b;">
+                    <label>中 (50-70%)</label>
+                    <div class="value" style="font-size: 1.2em;">40.15%</div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 5px;">9,816 场</div>
+                </div>
+
+            </div>
+            
+            <!-- 准确率趋势图 -->
+            <h3>📈 准确率趋势（近 30 天）</h3>
+            <div style="height: 300px; margin: 20px 0;">
+                <canvas id="accuracy-trend-chart"></canvas>
+            </div>
+            
+            <!-- 联赛对比条形图 -->
+            <h3>📊 联赛准确率对比</h3>
+            <div style="height: 300px; margin: 20px 0;">
+                <canvas id="league-comparison-chart"></canvas>
+            </div>
+            
+            <!-- 置信度分布饼图 -->
+            <h3>🎯 置信度分布</h3>
+            <div style="height: 300px; margin: 20px 0;">
+                <canvas id="confidence-distribution-chart"></canvas>
+            </div>
+        </div>
+
+
+
+    <script>
+    // 准确率趋势图
+    const trendCtx = document.getElementById('accuracy-trend-chart');
+    if (trendCtx) {
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ["04-19", "04-20", "04-21", "04-23", "04-26", "04-27", "04-28", "05-03", "05-04", "05-05", "05-11", "05-18"],  // 只显示 MM-DD
+                datasets: [{
+                    label: '每日准确率 (%)',
+                    data: [50.0, 66.67, 100.0, 0.0, 50.0, 16.67, 100.0, 100.0, 16.67, 0.0, 55.56, 77.78],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 30,
+                        max: 60,
+                        title: { display: true, text: '准确率 (%)' }
+                    }
+                }
+            }
+        });
+    }
+    
+    // 联赛对比条形图
+    const leagueCtx = document.getElementById('league-comparison-chart');
+    if (leagueCtx) {
+        new Chart(leagueCtx, {
+            type: 'bar',
+            data: {
+                labels: ["\u82f1\u8d85", "\u897f\u7532", "\u6cd5\u7532", "\u5fb7\u7532", "\u610f\u7532"],
+                datasets: [{
+                    label: '准确率 (%)',
+                    data: [42.88, 41.41, 40.18, 38.3, 37.5],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(245, 158, 11, 0.7)',
+                        'rgba(239, 68, 68, 0.7)',
+                        'rgba(139, 92, 246, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(16, 185, 129)',
+                        'rgb(59, 130, 246)',
+                        'rgb(245, 158, 11)',
+                        'rgb(239, 68, 68)',
+                        'rgb(139, 92, 246)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 30,
+                        max: 50,
+                        title: { display: true, text: '准确率 (%)' }
+                    }
+                }
+            }
+        });
+    }
+    
+    // 置信度分布饼图
+    const confCtx = document.getElementById('confidence-distribution-chart');
+    if (confCtx) {
+        new Chart(confCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ["\u9ad8 (\u226570%)", "\u4e2d (50-70%)"],
+                datasets: [{
+                    data: [4559.0, 9816.0],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(245, 158, 11, 0.7)',
+                        'rgba(107, 114, 128, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(16, 185, 129)',
+                        'rgb(245, 158, 11)',
+                        'rgb(107, 114, 128)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const pct = ((context.raw / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.raw}场 (${pct}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    </script>
+
 </body>
 </html>
