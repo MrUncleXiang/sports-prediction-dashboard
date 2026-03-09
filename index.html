@@ -239,16 +239,95 @@
                 width: 100%;
             }
         }
-    </style>
+    
+        /* 置信度星级显示 */
+        .confidence-stars {
+            display: inline-flex;
+            gap: 2px;
+            color: #ffd700;
+            font-size: 1.2em;
+        }
+        .confidence-stars .star {
+            color: #e5e7eb;
+        }
+        .confidence-stars .star.filled {
+            color: #ffd700;
+        }
+        .confidence-stars .star.half {
+            background: linear-gradient(90deg, #ffd700 50%, #e5e7eb 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 实时数据更新指示器 */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: #10b981;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* 预测概率条形图 */
+        .prediction-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .prediction-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        /* 准确率趋势图容器 */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+</style>
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🏆 体育预测系统 - 联赛预测</h1>
-            <p>多联赛预测数据展示与分析</p>
-            <p class="last-update">最后更新：<span id="last-update">加载中...</span></p>
-        </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h1 style="margin-bottom: 10px;">体育预测系统 - 联赛预测</h1>
+                            <p style="color: #666; font-size: 1.1em;">基于机器学习算法的体育赛事预测分析</p>
+                        </div>
+                        <div class="live-indicator">
+                            <span class="live-dot"></span>
+                            <span>实时更新</span>
+                        </div>
+                    </div>
+
+                    <div class="last-update">
+                        最后更新：2026-03-09 15:36:34
+                    </div>
+                </div>
 
         <!-- Loading -->
         <div id="loading" class="loading">
@@ -428,7 +507,33 @@
                 : 0;
             
             let html = `
+                
                 <div class="content-card">
+                    <h2>📈 数据可视化分析</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div>
+                            <h3>准确率趋势</h3>
+                            <div class="chart-container">
+                                <canvas id="accuracy-chart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>预测分布</h3>
+                            <div class="chart-container">
+                                <canvas id="distribution-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h3>置信度分布</h3>
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="confidence-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+<div class="content-card">
                     <h2>${league.icon} ${league.name} - 预测参数</h2>
                     
                     <div class="params-grid">
@@ -627,5 +732,200 @@
         // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', loadData);
     </script>
+
+        <!-- Chart.js 初始化 -->
+        <script>
+        // 准确率趋势图
+        let accuracyChart = null;
+        
+        function initAccuracyChart(leagueCode, predictions) {
+            const ctx = document.getElementById('accuracy-chart');
+            if (!ctx) return;
+            
+            // 计算每 10 场的滚动准确率
+            const windowSize = 10;
+            const rollingAccuracy = [];
+            const labels = [];
+            
+            for (let i = windowSize; i <= predictions.length; i++) {
+                const window = predictions.slice(i - windowSize, i);
+                const correct = window.filter(p => p.correct).length;
+                rollingAccuracy.push((correct / windowSize * 100).toFixed(1));
+                labels.push(`场次 ${i - windowSize + 1}-${i}`);
+            }
+            
+            if (accuracyChart) {
+                accuracyChart.destroy();
+            }
+            
+            accuracyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '滚动准确率 (%)',
+                        data: rollingAccuracy,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `准确率：${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 40,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: '准确率 (%)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 预测分布饼图
+        let distributionChart = null;
+        
+        function initDistributionChart(leagueCode, predictions) {
+            const ctx = document.getElementById('distribution-chart');
+            if (!ctx) return;
+            
+            const homeWins = predictions.filter(p => p.predicted === 2).length;
+            const draws = predictions.filter(p => p.predicted === 1).length;
+            const awayWins = predictions.filter(p => p.predicted === 0).length;
+            
+            if (distributionChart) {
+                distributionChart.destroy();
+            }
+            
+            distributionChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['主胜', '平局', '客胜'],
+                    datasets: [{
+                        data: [homeWins, draws, awayWins],
+                        backgroundColor: [
+                            '#10b981',
+                            '#f59e0b',
+                            '#ef4444'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = homeWins + draws + awayWins;
+                                    const percentage = ((context.raw / total) * 100).toFixed(1);
+                                    return `${context.label}: ${context.raw}场 (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 置信度分布直方图
+        let confidenceChart = null;
+        
+        function initConfidenceChart(leagueCode, predictions) {
+            const ctx = document.getElementById('confidence-chart');
+            if (!ctx) return;
+            
+            // 分桶统计
+            const buckets = {
+                '0-50%': 0,
+                '50-60%': 0,
+                '60-70%': 0,
+                '70-80%': 0,
+                '80-90%': 0,
+                '90-100%': 0
+            };
+            
+            predictions.forEach(p => {
+                const conf = p.confidence || 0;
+                if (conf < 50) buckets['0-50%']++;
+                else if (conf < 60) buckets['50-60%']++;
+                else if (conf < 70) buckets['60-70%']++;
+                else if (conf < 80) buckets['70-80%']++;
+                else if (conf < 90) buckets['80-90%']++;
+                else buckets['90-100%']++;
+            });
+            
+            if (confidenceChart) {
+                confidenceChart.destroy();
+            }
+            
+            confidenceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(buckets),
+                    datasets: [{
+                        label: '预测数量',
+                        data: Object.values(buckets),
+                        backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                        borderColor: '#667eea',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '预测数量'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 生成置信度星级显示
+        function renderConfidenceStars(confidence) {
+            const stars = Math.round(confidence / 20); // 5 星制
+            let html = '<div class="confidence-stars" title="置信度：' + confidence.toFixed(0) + '%">';
+            for (let i = 1; i <= 5; i++) {
+                html += '<span class="star ' + (i <= stars ? 'filled' : '') + '">★</span>';
+            }
+            html += '</div>';
+            return html;
+        }
+        </script>
 </body>
 </html>
