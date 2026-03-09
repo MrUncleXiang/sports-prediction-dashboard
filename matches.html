@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比赛数据查看 - 体育预测系统</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="css/matches.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div>
+                    <h1>📊 比赛数据查看</h1>
+                    <p>查看数据库中所有比赛数据，支持多维度筛选和导出</p>
+                </div>
+                <nav class="header-nav">
+                    <a href="index.html" class="nav-btn">← 返回首页</a>
+                </nav>
+            </div>
+            <div class="last-update">
+                数据最后更新：<span id="data-update-time">加载中...</span>
+            </div>
+        </header>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>正在加载比赛数据...</p>
+        </div>
+
+        <!-- Main Content -->
+        <main id="main-content" style="display: none;">
+            <!-- Filters -->
+            <section class="filters-section">
+                <div class="filters-card">
+                    <h2 class="filters-title">🔍 筛选条件</h2>
+                    
+                    <div class="filters-grid">
+                        <!-- 联赛筛选 -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <span class="label-icon">🏆</span>
+                                联赛筛选
+                            </label>
+                            <select id="league-filter" class="filter-select" multiple size="5">
+                                <option value="epl">英超 (EPL)</option>
+                                <option value="laliga">西甲 (LaLiga)</option>
+                                <option value="bundesliga">德甲 (Bundesliga)</option>
+                                <option value="seriea">意甲 (Serie A)</option>
+                                <option value="ligue1">法甲 (Ligue 1)</option>
+                                <option value="nba">NBA</option>
+                            </select>
+                            <div class="filter-hint">按住 Ctrl/Cmd 多选</div>
+                        </div>
+
+                        <!-- 赛季筛选 -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <span class="label-icon">📅</span>
+                                赛季筛选
+                            </label>
+                            <select id="season-filter" class="filter-select" multiple size="5">
+                                <!-- 动态生成 -->
+                            </select>
+                            <div class="filter-hint">按住 Ctrl/Cmd 多选</div>
+                        </div>
+
+                        <!-- 轮次筛选 -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <span class="label-icon">🔢</span>
+                                轮次筛选
+                            </label>
+                            <select id="round-filter" class="filter-select" multiple size="5">
+                                <!-- 动态生成 -->
+                            </select>
+                            <div class="filter-hint">按住 Ctrl/Cmd 多选</div>
+                        </div>
+
+                        <!-- 球队筛选 -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <span class="label-icon">👥</span>
+                                球队筛选
+                            </label>
+                            <input 
+                                type="text" 
+                                id="team-filter" 
+                                class="filter-input" 
+                                placeholder="输入球队名称搜索..."
+                            >
+                            <div class="filter-hint">支持主队或客队搜索</div>
+                        </div>
+
+                        <!-- 比赛状态筛选 -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <span class="label-icon">✅</span>
+                                比赛状态
+                            </label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="status-filter" value="all" checked>
+                                    <span>全部</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="status-filter" value="FINISHED">
+                                    <span>已结束</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="status-filter" value="SCHEDULED">
+                                    <span>未开始</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Actions -->
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" onclick="applyFilters()">
+                            🔍 应用筛选
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetFilters()">
+                            🔄 重置
+                        </button>
+                        <div class="filter-stats">
+                            <span id="filter-result-count">共 0 场比赛</span>
+                        </div>
+                        <div class="export-actions">
+                            <button class="btn btn-success" onclick="exportCSV()">
+                                📥 导出 CSV
+                            </button>
+                            <button class="btn btn-info" onclick="exportJSON()">
+                                📥 导出 JSON
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Table -->
+            <section class="table-section">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h2 class="table-title">📋 比赛数据</h2>
+                        <div class="page-size-selector">
+                            <label>每页显示：</label>
+                            <select id="page-size" onchange="changePageSize()">
+                                <option value="50">50 条</option>
+                                <option value="100" selected>100 条</option>
+                                <option value="200">200 条</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="matches-table" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th data-sort="round" class="sortable">
+                                        轮次 <span class="sort-indicator">↕</span>
+                                    </th>
+                                    <th data-sort="match_date" class="sortable">
+                                        日期 <span class="sort-indicator">↕</span>
+                                    </th>
+                                    <th data-sort="league_name" class="sortable">
+                                        联赛 <span class="sort-indicator">↕</span>
+                                    </th>
+                                    <th data-sort="home_team" class="sortable">
+                                        主队 <span class="sort-indicator">↕</span>
+                                    </th>
+                                    <th data-sort="score" class="sortable">
+                                        比分 <span class="sort-indicator">↕</span>
+                                    </th>
+                                    <th data-sort="away_team" class="sortable">
+                                        客队 <span class="sort-indicator">↕</span>
+                                    </th>
+                                    <th data-sort="status" class="sortable">
+                                        状态 <span class="sort-indicator">↕</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- 动态填充 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="btn btn-sm" onclick="firstPage()" id="btn-first">
+                            ⏮ 首页
+                        </button>
+                        <button class="btn btn-sm" onclick="prevPage()" id="btn-prev">
+                            ◀ 上一页
+                        </button>
+                        <span class="page-info" id="page-info">
+                            1 / 1
+                        </span>
+                        <button class="btn btn-sm" onclick="nextPage()" id="btn-next">
+                            下一页 ▶
+                        </button>
+                        <button class="btn btn-sm" onclick="lastPage()" id="btn-last">
+                            末页 ⏭
+                        </button>
+                        <div class="page-jump">
+                            <input type="number" id="page-jump-input" min="1" placeholder="页码">
+                            <button class="btn btn-sm" onclick="jumpToPage()">跳转</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/matches.js"></script>
+</body>
+</html>
