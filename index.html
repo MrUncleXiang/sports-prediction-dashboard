@@ -267,32 +267,59 @@
     </div>
 
     <script>
-        // 数据基础路径
-        const DATA_BASE = './data';
+        // 数据基础路径 - 支持 GitHub Pages 子路径部署
+        const getBasePath = () => {
+            const path = window.location.pathname;
+            // 如果是 GitHub Pages (如 /repo-name/)，需要保留 repo 名
+            const base = path.endsWith('/') ? path.slice(0, -1) : path;
+            return base || '';
+        };
+        const DATA_BASE = getBasePath() + '/data';
         
         // 当前选中的联赛
         let currentLeague = null;
         
-        // 联赛配置
+        // 联赛配置 - 与 leagues.json 中的数据匹配
         const LEAGUES = {
+            'PL': { name: '英超', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', color: '#3D195B' },
             'epl': { name: '英超', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', color: '#3D195B' },
             'laliga': { name: '西甲', icon: '🇪🇸', color: '#FF4E4E' },
             'bundesliga': { name: '德甲', icon: '🇩🇪', color: '#D20515' },
             'seriea': { name: '意甲', icon: '🇮🇹', color: '#008FD7' },
+            'ligue_1': { name: '法甲', icon: '🇫🇷', color: '#00235B' },
             'ligue1': { name: '法甲', icon: '🇫🇷', color: '#00235B' }
         };
 
         // 加载数据
         async function loadData() {
+            console.log('[DEBUG] 开始加载数据，DATA_BASE:', DATA_BASE);
             try {
                 // 加载联赛列表
-                const leaguesData = await fetch(`${DATA_BASE}/leagues.json`).then(r => r.json());
+                console.log('[DEBUG] 加载 leagues.json...');
+                const leaguesResponse = await fetch(`${DATA_BASE}/leagues.json`);
+                if (!leaguesResponse.ok) {
+                    throw new Error(`leagues.json 加载失败：${leaguesResponse.status} ${leaguesResponse.statusText}`);
+                }
+                const leaguesData = await leaguesResponse.json();
+                console.log('[DEBUG] leagues.json 加载成功，联赛数量:', leaguesData.length);
                 
                 // 加载预测数据
-                const predictionsData = await fetch(`${DATA_BASE}/predictions.json`).then(r => r.json());
+                console.log('[DEBUG] 加载 predictions.json...');
+                const predictionsResponse = await fetch(`${DATA_BASE}/predictions.json`);
+                if (!predictionsResponse.ok) {
+                    throw new Error(`predictions.json 加载失败：${predictionsResponse.status} ${predictionsResponse.statusText}`);
+                }
+                const predictionsData = await predictionsResponse.json();
+                console.log('[DEBUG] predictions.json 加载成功，联赛键:', Object.keys(predictionsData));
                 
                 // 加载模型数据
-                const modelsData = await fetch(`${DATA_BASE}/models.json`).then(r => r.json());
+                console.log('[DEBUG] 加载 models.json...');
+                const modelsResponse = await fetch(`${DATA_BASE}/models.json`);
+                if (!modelsResponse.ok) {
+                    throw new Error(`models.json 加载失败：${modelsResponse.status} ${modelsResponse.statusText}`);
+                }
+                const modelsData = await modelsResponse.json();
+                console.log('[DEBUG] models.json 加载成功');
                 
                 // 渲染联赛按钮
                 renderLeagueButtons(leaguesData, predictionsData);
@@ -309,15 +336,47 @@
                 
                 // 更新时间
                 document.getElementById('last-update').textContent = new Date().toLocaleString('zh-CN');
+                console.log('[DEBUG] 数据加载完成');
                 
             } catch (error) {
-                console.error('加载数据失败:', error);
+                console.error('[ERROR] 加载数据失败:', error);
                 document.getElementById('loading').innerHTML = `
-                    加载数据失败<br>
-                    <small style="opacity: 0.8;">${error.message}</small><br><br>
-                    <button onclick="location.reload()" style="padding: 10px 20px; border: none; border-radius: 5px; background: white; color: #667eea; cursor: pointer;">刷新页面</button>
+                    <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                        <h3 style="color: #dc2626; margin-bottom: 15px;">⚠️ 数据加载失败</h3>
+                        <p style="margin-bottom: 10px;"><strong>错误信息：</strong>${error.message}</p>
+                        <p style="margin-bottom: 10px;"><strong>数据路径：</strong>${DATA_BASE}</p>
+                        <p style="margin-bottom: 20px; opacity: 0.8;">请检查：</p>
+                        <ul style="margin-bottom: 20px; padding-left: 20px; opacity: 0.8;">
+                            <li>data 目录是否存在</li>
+                            <li>JSON 文件格式是否正确</li>
+                            <li>GitHub Pages 是否已正确部署</li>
+                        </ul>
+                        <button onclick="location.reload()" style="padding: 12px 24px; border: none; border-radius: 8px; background: #667eea; color: white; cursor: pointer; font-weight: 600;">🔄 刷新页面</button>
+                        <button onclick="checkDataFiles()" style="padding: 12px 24px; border: none; border-radius: 8px; background: white; color: #667eea; cursor: pointer; font-weight: 600; margin-left: 10px;">🔍 诊断问题</button>
+                    </div>
                 `;
             }
+        }
+        
+        // 诊断数据文件
+        async function checkDataFiles() {
+            const files = ['leagues.json', 'predictions.json', 'models.json', 'stats.json'];
+            let report = '<h4 style="margin: 15px 0;">诊断报告：</h4><ul style="padding-left: 20px;">';
+            
+            for (const file of files) {
+                try {
+                    const response = await fetch(`${DATA_BASE}/${file}`);
+                    const status = response.ok ? '✅ 可访问' : `❌ ${response.status}`;
+                    report += `<li>${file}: ${status}</li>`;
+                } catch (e) {
+                    report += `<li>${file}: ❌ ${e.message}</li>`;
+                }
+            }
+            report += '</ul>';
+            report += `<p style="margin-top: 15px;"><strong>当前路径：</strong>${DATA_BASE}</p>`;
+            report += `<p style="margin-top: 10px;"><strong>页面 URL：</strong>${window.location.href}</p>`;
+            
+            document.getElementById('loading').innerHTML += report;
         }
 
         // 渲染联赛按钮
