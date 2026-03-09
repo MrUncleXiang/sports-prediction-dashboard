@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据加载诊断</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: white;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            color: #333;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .card h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+        .status.success { background: #d1fae5; color: #065f46; }
+        .status.error { background: #fee2e2; color: #991b1b; }
+        .status.loading { background: #fef3c7; color: #92400e; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .log-entry {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+        .log-entry.error {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+        }
+        .log-entry.success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+        }
+        .log-entry.info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>🔍 数据加载诊断工具</h2>
+            <p>此页面用于诊断 GitHub Pages 数据加载问题</p>
+            <button onclick="runDiagnostics()">🔄 运行诊断</button>
+            <button onclick="location.href='index.html'">🏠 返回主页</button>
+        </div>
+        
+        <div class="card">
+            <h2>📊 诊断结果</h2>
+            <div id="results">
+                <p>点击"运行诊断"按钮开始检查...</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📝 详细日志</h2>
+            <div id="logs"></div>
+        </div>
+    </div>
+
+    <script>
+        const DATA_BASE = window.location.pathname.endsWith('/') 
+            ? window.location.pathname.slice(0, -1) + '/data'
+            : window.location.pathname + '/data';
+        
+        function log(message, type = 'info') {
+            const logsDiv = document.getElementById('logs');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logsDiv.appendChild(entry);
+            console.log(message);
+        }
+        
+        async function runDiagnostics() {
+            const resultsDiv = document.getElementById('results');
+            const logsDiv = document.getElementById('logs');
+            resultsDiv.innerHTML = '';
+            logsDiv.innerHTML = '';
+            
+            log('开始诊断...', 'info');
+            log(`数据基础路径：${DATA_BASE}`, 'info');
+            log(`页面 URL: ${window.location.href}`, 'info');
+            
+            const files = [
+                { name: 'leagues.json', expected: 'array' },
+                { name: 'predictions.json', expected: 'object' },
+                { name: 'models.json', expected: 'object' },
+                { name: 'stats.json', expected: 'object' }
+            ];
+            
+            let allSuccess = true;
+            let totalMatches = 0;
+            
+            for (const file of files) {
+                const url = `${DATA_BASE}/${file.name}?t=${Date.now()}`;
+                log(`检查 ${file.name}...`, 'info');
+                
+                try {
+                    const startTime = Date.now();
+                    const response = await fetch(url);
+                    const loadTime = Date.now() - startTime;
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const contentType = response.headers.get('content-type');
+                    log(`✓ ${file.name} 加载成功 (${loadTime}ms, ${contentType})`, 'success');
+                    
+                    const data = await response.json();
+                    const dataType = Array.isArray(data) ? 'array' : typeof data;
+                    
+                    if (dataType !== file.expected) {
+                        log(`✗ ${file.name} 格式错误：期望 ${file.expected}，得到 ${dataType}`, 'error');
+                        allSuccess = false;
+                    } else {
+                        log(`✓ ${file.name} 格式正确 (${dataType})`, 'success');
+                    }
+                    
+                    // 统计比赛场次
+                    if (file.name === 'predictions.json') {
+                        let totalMatches = 0;
+                        const leagueCounts = {};
+                        for (const [league, matches] of Object.entries(data)) {
+                            leagueCounts[league] = Array.isArray(matches) ? matches.length : 0;
+                            totalMatches += leagueCounts[league];
+                        }
+                        log(`✓ predictions.json 包含 ${Object.keys(data).length} 个联赛，共 ${totalMatches} 场比赛`, 'success');
+                        log(`  详情：${JSON.stringify(leagueCounts)}`, 'info');
+                    }
+                    
+                    // 统计联赛数量
+                    if (file.name === 'leagues.json') {
+                        log(`✓ leagues.json 包含 ${data.length} 个联赛：${data.join(', ')}`, 'success');
+                    }
+                    
+                } catch (error) {
+                    log(`✗ ${file.name} 加载失败：${error.message}`, 'error');
+                    allSuccess = false;
+                }
+            }
+            
+            // 显示总结
+            resultsDiv.innerHTML = `
+                <div style="margin: 20px 0;">
+                    <h3>诊断总结</h3>
+                    <div class="status ${allSuccess ? 'success' : 'error'}">
+                        ${allSuccess ? '✅ 所有检查通过' : '❌ 发现问题'}
+                    </div>
+                    <p style="margin-top: 15px;">
+                        ${allSuccess 
+                            ? '数据文件加载正常。如果主页仍显示"0 场"，请尝试：<br>1. 强制刷新页面 (Ctrl+F5 或 Cmd+Shift+R)<br>2. 清除浏览器缓存<br>3. 使用无痕模式访问'
+                            : '部分数据文件加载失败。请检查：<br>1. GitHub Pages 是否已正确部署<br>2. 数据文件是否存在于 data/ 目录<br>3. 浏览器控制台是否有 CORS 错误'
+                        }
+                    </p>
+                </div>
+            `;
+            
+            log('诊断完成', allSuccess ? 'success' : 'error');
+        }
+        
+        // 自动运行诊断
+        window.addEventListener('DOMContentLoaded', runDiagnostics);
+    </script>
+</body>
+</html>
